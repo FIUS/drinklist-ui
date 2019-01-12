@@ -10,6 +10,9 @@ const loginTemplates = new Map<string, TemplateComponent>();
 loginTemplates.set('content', {template: 'login', controller: new LoginTemplateController()});
 loginTemplates.set('footer', {template: 'api-chooser', controller: new ApiChooserTemplateController()});
 
+const orderTemplates = new Map<string, TemplateComponent>();
+loginTemplates.set('content', {template: 'order'});
+
 routes.set('login', {
     templates: loginTemplates,
     authenticated: false,
@@ -17,5 +20,14 @@ routes.set('login', {
     needsAdminLogin: false,
 });
 
-const router = new Router(routes, 'login', new Authentication());
+routes.set('order', {
+    templates: orderTemplates,
+    authenticated: true,
+    needsKioskLogin: false,
+    needsAdminLogin: false,
+});
+
+export const authenticator = new Authentication()
+
+export const router = new Router(routes, 'login', authenticator);
 
