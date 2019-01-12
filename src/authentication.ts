@@ -20,7 +20,7 @@ export class Authentication implements LoginGuard {
     }
 
     constructor() {
-        if (this.isAuthenticated) {
+        if (this.isAuthenticated()) {
             this.startWatchdog();
         }
     }
@@ -35,11 +35,11 @@ export class Authentication implements LoginGuard {
     }
 
     isKiosk() {
-        return this.isAuthenticated && this.isKioskToken(this.refreshToken);
+        return this.isAuthenticated() && this.isKioskToken(this.refreshToken);
     }
 
     isAdmin() {
-        return this.isAuthenticated && this.isAdminToken(this.refreshToken);
+        return this.isAuthenticated() && this.isAdminToken(this.refreshToken);
     }
 
     get accessToken() {
@@ -119,11 +119,11 @@ export class Authentication implements LoginGuard {
     }
 
     updateTokens(tokens) {
-        if (tokens.accessToken != null) {
-            localStorage.setItem(JWT_TOKEN_KEY, tokens.accessToken);
+        if (tokens['access_token'] != null) {
+            localStorage.setItem(JWT_TOKEN_KEY, tokens['access_token']);
         }
-        if (tokens.refreshToken != null) {
-            localStorage.setItem(JWT_REFRESH_TOKEN_KEY, tokens.refreshToken);
+        if (tokens['refresh_token'] != null) {
+            localStorage.setItem(JWT_REFRESH_TOKEN_KEY, tokens['refresh_token']);
         }
     }
 }

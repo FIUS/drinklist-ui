@@ -59,6 +59,17 @@ export default class Router {
 
 
         let lastRoute = this.getRoute(this.activeRoute);
+        if (lastRoute != null) {
+            console.log(lastRoute)
+            lastRoute.templates.forEach((prevTemplate, containerId) => {
+                const container = select<HTMLDivElement, any>(`div#${containerId}`);
+                if (prevTemplate != null) {
+                    if (prevTemplate.controller != null) {
+                        prevTemplate.controller.deactivateRoute(container);
+                    }
+                }
+            });
+        }
 
         route.templates.forEach((template, containerId) => {
             const container = select<HTMLDivElement, any>(`div#${containerId}`);
@@ -66,11 +77,7 @@ export default class Router {
                 console.log(`emplate container with id ${containerId} not found!`);
                 return;
             }
-            let prevTemplate;
-            if (lastRoute != null) {
-                lastRoute.templates.get(containerId);
-            }
-            this.replaceTemplate(container, template, prevTemplate);
+            this.replaceTemplate(container, template);
         });
 
         translate();
@@ -78,13 +85,7 @@ export default class Router {
         this.activeRoute = hash;
     }
 
-    private replaceTemplate(container: Selection<HTMLDivElement, null, any, null>, template: TemplateComponent, prevTemplate?: TemplateComponent) {
-        if (prevTemplate != null) {
-            if (prevTemplate.controller != null) {
-                prevTemplate.controller.deactivateRoute(container);
-            }
-        }
-
+    private replaceTemplate(container: Selection<HTMLDivElement, null, any, null>, template: TemplateComponent) {
         const templateSelection = select(`template#${template.template}`);
         if (templateSelection.empty()) {
             console.log(`Template ID ${template.template} not found!`);

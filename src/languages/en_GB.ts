@@ -5,4 +5,5 @@ export const en_GB = {
     'login.login': 'login',
     'login.error': 'Username or password incorrect!',
     'api-chooser.apiURL': 'Api URL',
+    'top-menu.logout': 'Logout',
 }

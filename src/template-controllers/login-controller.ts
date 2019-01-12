@@ -5,8 +5,9 @@ import {router, authenticator} from '../index';
 export default class LoginTemplateController implements TemplateController {
 
     activateRoute(container) {
+        console.log('Auth status', authenticator.isAuthenticated())
         if (authenticator.isAuthenticated()) {
-            router.changeRoute('');
+            router.changeRoute('order');
         }
         container.select('form').on('submit', function() {
             const event = require('d3').event; // live binding needed!
@@ -18,7 +19,7 @@ export default class LoginTemplateController implements TemplateController {
             form.select('input.password').property('value', '');
             authenticator.login(username, password).then(() => {
                 form.select('input.username').property('value', '');
-                router.changeRoute('');
+                router.changeRoute('order');
             }, (err) => {
                 container.select('.error')
                   .transition()

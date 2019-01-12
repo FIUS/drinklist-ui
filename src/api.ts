@@ -6,7 +6,7 @@ import {json, geoNaturalEarth1} from 'd3';
 import { callbackify } from 'util';
 import { request } from 'http';
 
-const API_URL_KEY = 'API_URL';
+const API_URL_KEY = 'DRINKLIST_API_URL';
 
 enum METHOD {
     GET='GET',

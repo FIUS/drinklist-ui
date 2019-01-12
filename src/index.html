@@ -6,12 +6,12 @@
 
     </head>
     <body class="flex flex-column ma0 h-100 items-stretch">
-        <div class="header flex" id="header"></div>
+        <div class="header flex items-stretch" id="header"></div>
         <div class="body flex-grow-1 flex items-stretch">
             <div class="sidebar flex" id="sidebar"></div>
             <div class="content flex-grow-1 flex"  id="content"></div>
         </div>
-        <div class="footer flex" id="footer"></div>
+        <div class="footer flex items-stretch" id="footer"></div>
 
         <!-- template section -->
         <template id="login">
@@ -34,9 +34,15 @@
             </div>
         </template>
 
+        <template id="top-menu">
+            <div class="flex pa2 items-center">
+                <button class="logout f4 pa2 ba br2 b--red bg-white hover-red hover-bg-near-white link bg-animate"><i class="fas fa-sign-out-alt"></i><span class="ml2" translate="yes" data-translation="top-menu.logout"></span></button>
+            </div>
+        </template>
         <template id="order">
             <h1>HELLO User</h1>
         </template>
+
         <template id="beverage-list">
 
 
