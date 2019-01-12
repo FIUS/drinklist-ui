@@ -12,15 +12,24 @@
             <div class="content flex-grow-1 flex"  id="content"></div>
         </div>
         <div class="footer flex" id="footer"></div>
+
+        <!-- template section -->
         <template id="login">
             <div class="flex-grow-1 self-center flex flex-column items-center justify-center">
 
-                <h1 translate="yes" data-translation="login.heading">Drinklist Login</h1>
+                <h1 translate="yes" data-translation="login.heading"></h1>
                 <form class="flex flex-column">
-                    <input class="username pa2 b--black-30 ba br2 br--top" translate="yes" data-translation="login.username" type="text" name="username" placeholder="username" autocomplete="username" required>
-                    <input class="password pa2 b--black-30 ba br2 br--bottom" translate="yes" data-translation="login.password" type="password" name="password" placeholder="password" autocomplete="current-password" required>
-                    <button class="submit mt2 br2 pa2" type="submit" translate="yes" data-translation="login.login">Login</button>
+                    <input class="username pa2 b--black-30 ba br2 br--top" translate="yes" data-translation="login.username" type="text" name="username" autocomplete="username" required>
+                    <input class="password pa2 b--black-30 ba br2 br--bottom" translate="yes" data-translation="login.password" type="password" name="password" autocomplete="current-password" required>
+                    <button class="submit mt2 br2 pa2" type="submit" translate="yes" data-translation="login.login"></button>
                 </form>
+            </div>
+        </template>
+
+        <template id="api-chooser">
+            <div class="flex-grow-1 flex justify-end items-center">
+                <p class="f5 gray mr2" translate="yes" data-translation="api-chooser.apiURL">Api URL</p>
+                <input class="api-url w5 truncate f5 mr2 pa1 bn gray" type="url"></input>
             </div>
         </template>
     </body>

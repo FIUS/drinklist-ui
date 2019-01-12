@@ -1,8 +1,5 @@
+import { en_GB } from './languages/en_GB';
+
 export const translations = {
-    'en_GB': {
-        'login.heading': 'Login',
-        'login.username': 'username',
-        'login.password': 'password',
-        'login.login': 'login',
-    }
+    'en_GB': en_GB,
 }
