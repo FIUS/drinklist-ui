@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html class="h-100">
+    <head>
+        <meta charset="utf-8" />
+        <title>Drinklist</title>
+
+    </head>
+    <body class="flex flex-column ma0 h-100 items-stretch">
+        <div class="header flex" id="header"></div>
+        <div class="body flex-grow-1 flex items-stretch">
+            <div class="sidebar flex" id="sidebar"></div>
+            <div class="content flex-grow-1 flex"  id="content"></div>
+        </div>
+        <div class="footer flex" id="footer"></div>
+        <template id="login">
+            <div class="flex-grow-1 self-center flex flex-column items-center justify-center">
+
+                <h1>Drinklist Login</h1>
+                <form class="flex flex-column">
+                    <input class="username pa2 b--black-30 ba br2 br--top" type="text" name="username" placeholder="username" autocomplete="username" required>
+                    <input class="password pa2 b--black-30 ba br2 br--bottom" type="password" name="password" placeholder="password" autocomplete="current-password" required>
+                    <button class="submit mt2 br2 pa2" type="submit">Login</button>
+                </form>
+            </div>
+        </template>
+    </body>
+</html>

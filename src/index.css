@@ -1,0 +1,5 @@
+@import '~tachyons/css/tachyons.css';
+
+p {
+    color: red;
+}
