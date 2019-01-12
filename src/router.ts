@@ -1,6 +1,7 @@
 import {select, Selection} from 'd3';
 import { Route, TemplateComponent } from './route';
 import { LoginGuard } from './authentication';
+import translate from './translate';
 
 export default class Router {
     private routes: Map<string, Route>;
@@ -70,7 +71,9 @@ export default class Router {
                 lastRoute.templates.get(containerId);
             }
             this.replaceTemplate(container, template, prevTemplate);
-        })
+        });
+
+        translate();
 
         this.activeRoute = hash;
     }
