@@ -63,15 +63,19 @@ function getAuth() {
     });
 }
 
-function callRef(ref: string, method: METHOD = METHOD.GET, data?, token?:string) {
+function callRef(ref: string, suffix='', method: METHOD = METHOD.GET, data?, token?:string) {
     let url = endpointMap.get(ref);
     if (url == null) {
         if (!completedRequests.has('root')) {
-            return getRoot().then(() => callRef(ref, method, data, token));
+            return getRoot().then(() => callRef(ref, suffix, method, data, token));
         } else  if (!completedRequests.has('auth')) {
-            return getAuth().then(() => callRef(ref, method, data, token));
+            return getAuth().then(() => callRef(ref, suffix, method, data, token));
         }
     }
+    return callUrl(url, suffix, method, data, token);
+}
+
+function callUrl(url: URL, suffix: string, method: METHOD, data: any, token: string) {
     const requestInit: RequestInit = {
         method: method,
         headers: {
@@ -84,17 +88,24 @@ function callRef(ref: string, method: METHOD = METHOD.GET, data?, token?:string)
     if (token != null) {
         requestInit.headers['Authorization'] = `Bearer ${token}`;
     }
-    return json(url.href, requestInit);
+    if (suffix == null) {
+        suffix = '';
+    }
+    return json(url.href.replace(/\/?$/, '/') + suffix.replace(/^\//, ''), requestInit);
 }
 
 export function login(username: string, password: string) {
-    return callRef('login', METHOD.POST, {username: username, password: password});
+    return callRef('login', '', METHOD.POST, {username: username, password: password});
 }
 
 export function refreshToken(token: string) {
-    return callRef('refresh', METHOD.POST, null, token);
+    return callRef('refresh', '', METHOD.POST, null, token);
 }
 
 export function getBeverageList(token: string) {
-    return callRef('beverages', METHOD.GET, null, token);
+    return callRef('beverages', '', METHOD.GET, null, token);
+}
+
+export function getUser(token: string, username: string) {
+    return callRef('users', username + '/', METHOD.GET, null, token);
 }

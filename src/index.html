@@ -9,7 +9,7 @@
         <div class="header flex items-stretch" id="header"></div>
         <div class="body flex-grow-1 flex items-stretch">
             <div class="sidebar flex" id="sidebar"></div>
-            <div class="content flex-grow-1 flex"  id="content"></div>
+            <div class="content flex-grow-1 flex items-stretch"  id="content"></div>
         </div>
         <div class="footer flex items-stretch" id="footer"></div>
 
@@ -40,12 +40,23 @@
             </div>
         </template>
         <template id="order">
-            <h1>HELLO User</h1>
-            <div id="beverage-list-container"></div>
+            <div class="flex-grow-1 flex items-stretch">
+                <div class="flex-grow-1 flex flex-column">
+                    <h1 class="mb1"><span class="o-70" translate="yes" data-translation="order.greeting"></span><span class="username ml2"></span></h1>
+                    <div id="beverage-list-container"></div>
+                </div>
+                <div class="flex-grow-1 flex flex-column">
+                    <div class="balance-container br4 pa3">
+                        <h1 class="o-70 mb1" translate="yes" data-translation="order.balance"></h1>
+                        <h2 class="balance f1 tr mv1"></h2>
+                    </div>
+                    <div id="beverage-list-container"></div>
+                </div>
+            </div>
         </template>
 
         <template id="beverage-list">
-            <h2>Beverages</h2>
+            <h2 translate="yes" data-translation="beverage-list.heading"></h2>
             <div class="beverage-list flex flex-column"></div>
         </template>
     </body>
