@@ -51,14 +51,18 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                 .classed('transaction', true)
                 .attr('id', d => d.id)
                 .call(historySelection => {
-                    historySelection.append('span').classed('timestamp', true);
-                    historySelection.append('span').classed('reason', true);
+                    const firstRow = historySelection.append('div')
+                        .classed('flex', true);
+                    firstRow.append('span').classed('timestamp', true);
+                    firstRow.append('span').classed('reason', true);
+                    firstRow.append('span').classed('amount', true);
                     historySelection.append('div').classed('beverages', true).classed('flex', true).classed('flex-grow-1', true);
                 })
               .merge(historySelection)
                 .classed('flex', true)
+                .classed('flex-column', true)
                 .call(historySelection => {
-                    historySelection.classed('dark-green', d => d.reason === 'CANCEL')
+                    historySelection.classed('dark-green', d => d.amount < 0)
                     historySelection.classed('o-50', d => cancelled.has(d.id))
                     historySelection.select('.timestamp')
                         .classed('mr3', true)
@@ -68,8 +72,14 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                         });
                     historySelection.select('.reason')
                         .classed('mr3', true)
-                        .classed('w4', true)
+                        .classed('flex-grow-1', true)
                         .text(d => d.reason);
+                    historySelection.select('.amount')
+                        .classed('w4', true)
+                        .classed('tr', true)
+                        .classed('dark-green', d => d.amount < 0)
+                        .classed('b', d => d.amount < 0)
+                        .text(d => '𝚺 = ' + formatCurrency(d.amount/100));
                 }).each(function (d) {
                     const beverageSelection = select(this).select('.beverages')
                         .selectAll('div.beverage').data(d.beverages);
@@ -79,11 +89,13 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                     beverageSelection.enter()
                         .append('div')
                         .classed('beverage', true)
+                        .classed('o-60', true)
                         .classed('flex', true)
                         .classed('flex-grow-1', true)
                         .call(beverageSelection => {
                             beverageSelection.append('div')
                                 .classed('w2', true)
+                                .classed('ml4', true)
                                 .classed('mr2', true)
                                 .classed('tr', true)
                                 .classed('beverage-count', true);
