@@ -5,7 +5,7 @@ const JWT_TOKEN_KEY = 'DRINKLIST_JWT_TOKEN';
 const JWT_REFRESH_TOKEN_KEY = 'DRINKLIST_JWT_REFRESH_TOKEN';
 
 export interface LoginGuard {
-    canAccess: (route: Route) => boolean;
+    canAccess: (route: Route, param?: string) => boolean;
     isAuthenticated: () => boolean;
 }
 
@@ -26,7 +26,28 @@ export class Authentication implements LoginGuard {
         }
     }
 
-    canAccess(route: Route): boolean {
+    canAccess(route: Route, param?: string): boolean {
+        if (route.authenticated && !this.isAuthenticated()) {
+            return false;
+        }
+        if (route.needsAdminLogin && !this.isAdmin()) {
+            return false;
+        }
+        if (route.needsKioskLogin && !(this.isAdmin() || this.isKiosk())) {
+            return false;
+        }
+        if (route.param === 'username') {
+            if (this.isAdmin()) {
+                return true;
+            }
+            if (this.isKiosk() && route.allowKioskParamAccess) {
+                return true;
+            }
+            if (route.allowCurrentUserParamAccess && param === this.username || param == null) {
+                return true;
+            }
+            return false;
+        }
         return true;
     }
 

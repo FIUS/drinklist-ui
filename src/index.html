@@ -36,9 +36,10 @@
 
         <template id="top-menu">
             <div class="flex pa2 items-center">
-                <button class="logout f4 pa2 ba br2 b--red bg-white hover-red hover-bg-near-white link bg-animate"><i class="fas fa-sign-out-alt"></i><span class="ml2" translate="yes" data-translation="top-menu.logout"></span></button>
+                <button class="logout f4 pa2 ba br2 b--red bg-white hover-red hover-bg-near-white link bg-animate pointer"><i class="fas fa-sign-out-alt"></i><span class="ml2" translate="yes" data-translation="top-menu.logout"></span></button>
             </div>
         </template>
+
         <template id="order">
             <div class="flex-grow-1 flex items-stretch">
                 <div class="flex-grow-1 flex flex-column">
@@ -51,6 +52,18 @@
                         <h2 class="balance f1 tr mv1"></h2>
                     </div>
                     <div id="transaction-history-container"></div>
+                </div>
+            </div>
+        </template>
+
+        <template id="user-chooser">
+            <div class="flex-grow-1 flex flex-column items-stretch">
+                <div class="flex flex-column items-center justify-center">
+                    <h1 class="f1" translate="yes" data-translation="user-chooser.question"></h1>
+                    <input class="user-search w-two-thirds pa2 ba br2 b--black-30" type="search" translate="yes" data-translation="user-chooser.search">
+                </div>
+                <div class="users flex flex-wrap ma4">
+
                 </div>
             </div>
         </template>

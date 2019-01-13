@@ -7,7 +7,6 @@ export default class LoginTemplateController implements TemplateController {
     private children = new Set<TemplateController>();
 
     activateRoute(container) {
-        console.log('Auth status', authenticator.isAuthenticated())
         if (authenticator.isAuthenticated()) {
             router.changeRoute('order');
         }

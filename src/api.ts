@@ -112,6 +112,10 @@ export function getUser(token: string, username: string) {
     return callRef('users', username + '/', METHOD.GET, null, token);
 }
 
+export function getUserList(token: string) {
+    return callRef('users', '', METHOD.GET, null, token);
+}
+
 export function getTransactionHistory(token: string, username: string) {
     return callRef('users', username + '/transactions/', METHOD.GET, null, token);
 }

@@ -11,5 +11,7 @@ export interface Route {
     authenticated: boolean;
     needsKioskLogin: boolean;
     needsAdminLogin: boolean;
-    routeController?: TemplateController;
+    allowKioskParamAccess: boolean;
+    allowCurrentUserParamAccess: boolean;
+    param?: string;
 }

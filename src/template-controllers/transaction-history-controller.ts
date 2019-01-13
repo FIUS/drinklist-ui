@@ -102,12 +102,12 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                         .classed('dark-green', d => d.amount > 0)
                         .classed('b', d => d.amount > 0)
                         .text(d => '𝚺 = ' + formatCurrency(d.amount/100));
-                    historySelection.select('.return>.fas')
+                    const returnButton = historySelection.select('.return>.fas')
                         .style('display', d => {
                             let past = new Date();
                             past = new Date(past.getTime() - (5 * 60 * 1000));
-                            if (d.timestamp < past.getUTCSeconds()) {
-                                if (! authenticator.isAdmin()) {
+                            if (d.timestamp*1000 < past.getTime()) {
+                                if (cancelled.has(d.id) || !authenticator.isAdmin()) {
                                     return 'none';
                                 }
                             }
@@ -118,21 +118,23 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                             revertOrder(authenticator.accessToken, this.username,  order).then(() => {
                                 this.parent.updateRoute();
                             });
-                        })
-                      .transition()
-                        .delay((d) => {
-                            let past = new Date();
-                            past = new Date(past.getTime() - (5* 60 * 1000) + 2000);
-                            const time = d.timestamp;
-                            if (time > past.getUTCSeconds()) {
-                                return (time * 1000) - past.getTime();
-                            } else {
-                                return 0;
-                            }
-                        })
-                        .duration(2000)
-                        .ease(easeBounce)
-                        .style('opacity', 0);
+                        });
+                    if (!authenticator.isAdmin()) {
+                        returnButton.transition()
+                            .delay((d) => {
+                                let past = new Date();
+                                past = new Date(past.getTime() - (5* 60 * 1000) + 2000);
+                                const time = d.timestamp;
+                                if (time > past.getUTCSeconds()) {
+                                    return (time * 1000) - past.getTime();
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            .duration(2000)
+                            .ease(easeBounce)
+                            .style('opacity', 0);
+                    }
                 }).each(function (d) {
                     const beverageSelection = select(this).select('.beverages')
                         .selectAll('div.beverage').data(d.beverages);

@@ -9,4 +9,6 @@ export const en_GB = {
     'order.greeting': 'Welcome',
     'order.balance': 'Balance',
     'beverage-list.heading': 'Beverages',
+    'user-chooser.question': 'Who are you?',
+    'user-chooser.search': 'username',
 }

@@ -7,6 +7,7 @@ import TopMenuTemplateController from "./template-controllers/top-menu-controlle
 import BeverageListTemplateController from "./template-controllers/beverage-list-controller";
 import OrderTemplateController from "./template-controllers/order-controller";
 import TransactionHistoryTemplateController from "./template-controllers/transaction-history-controller";
+import UserChooserTemplateController from "./template-controllers/user-chooser-controller";
 
 const routes = new Map<string, Route>();
 
@@ -23,12 +24,18 @@ const orderTemplates = new Map<string, TemplateComponent>();
 orderTemplates.set('header', {template: 'top-menu', controller: new TopMenuTemplateController()});
 orderTemplates.set('content', {template: 'order', controller: new OrderTemplateController(), nested: nestedOrderTemplates});
 
+const usersTemplates = new Map<string, TemplateComponent>();
+usersTemplates.set('header', {template: 'top-menu', controller: new TopMenuTemplateController()});
+usersTemplates.set('content', {template: 'user-chooser', controller: new UserChooserTemplateController()});
+
 
 routes.set('login', {
     templates: loginTemplates,
     authenticated: false,
     needsKioskLogin: false,
     needsAdminLogin: false,
+    allowKioskParamAccess: false,
+    allowCurrentUserParamAccess: false,
 });
 
 routes.set('order', {
@@ -36,7 +43,22 @@ routes.set('order', {
     authenticated: true,
     needsKioskLogin: false,
     needsAdminLogin: false,
+    allowKioskParamAccess: true,
+    allowCurrentUserParamAccess: true,
+    param: 'username',
 });
+
+routes.set('users', {
+    templates: usersTemplates,
+    authenticated: true,
+    needsKioskLogin: true,
+    needsAdminLogin: false,
+    allowKioskParamAccess: false,
+    allowCurrentUserParamAccess: false,
+    param: 'username',
+});
+
+
 
 export const authenticator = new Authentication()
 

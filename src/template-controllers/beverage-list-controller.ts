@@ -6,7 +6,7 @@ import { formatCurrency } from "../translate";
 
 export default class BeverageListTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();;
+    private children = new Set<TemplateController>();
 
     private username: string;
 
@@ -42,6 +42,7 @@ export default class BeverageListTemplateController implements TemplateControlle
                 .classed('ba', true)
                 .classed('br2', true)
                 .classed('grow', true)
+                .classed('pointer', true)
                 .classed('bg-white', true)
                 .classed('hover-bg-near-white', true)
 

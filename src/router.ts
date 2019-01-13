@@ -21,7 +21,7 @@ export default class Router {
         if (!this.loginGuard.isAuthenticated()) {
             this.changeRoute(loginRoute);
         }
-        this.loadTemplateForHash();
+        window.setTimeout(this.loadTemplateForHash.bind(this), 1);
     }
 
     private getRoute(hash: string): Route {
@@ -29,6 +29,9 @@ export default class Router {
             return null;
         }
         let route = this.routes.get(hash);
+        if (route == null && hash.indexOf('/') >= 0) {
+            route = this.routes.get(hash.substring(0, hash.indexOf('/') ));
+        }
         return route;
     }
 
@@ -51,13 +54,24 @@ export default class Router {
             }
             return;
         }
-        if (! this.loginGuard.canAccess(route)) {
+
+        let routeParam;
+
+        if (route.param != null) {
+            if (hash.indexOf('/') >= 0) {
+                routeParam = hash.substr(hash.indexOf('/') + 1);
+            }
+        }
+
+        if (! this.loginGuard.canAccess(route, routeParam)) {
+            if (routeParam != null) {
+                this.changeRoute(hash.substring(0, hash.indexOf('/')));
+            }
             if (hash !== this.loginRoute) {
                 this.changeRoute(this.loginRoute);
             }
             return;
         }
-
 
         let lastRoute = this.getRoute(this.activeRoute);
         if (lastRoute != null) {
@@ -70,7 +84,7 @@ export default class Router {
                 console.log(`emplate container with id ${containerId} not found!`);
                 return;
             }
-            this.replaceTemplate(container, template);
+            this.replaceTemplate(container, template, routeParam, null);
         });
 
         translate();
@@ -100,7 +114,7 @@ export default class Router {
         });
     }
 
-    private replaceTemplate(container: Selection<HTMLDivElement, null, any, null>, template: TemplateComponent, parentController?: TemplateController) {
+    private replaceTemplate(container: Selection<HTMLDivElement, null, any, null>, template: TemplateComponent, param?: string, parentController?: TemplateController) {
         const templateSelection = select(`template#${template.template}`);
         if (templateSelection.empty()) {
             console.log(`Template ID ${template.template} not found!`);
@@ -114,13 +128,13 @@ export default class Router {
         });
 
         if (template.controller != null) {
-            template.controller.activateRoute(container, parentController);
+            template.controller.activateRoute(container, parentController, param);
         }
 
         if (template.nested != null) {
             template.nested.forEach((nestedTemplate, containerId) => {
                 const innerContainer = container.select<HTMLDivElement>(`div#${containerId}`);
-                this.replaceTemplate(innerContainer, nestedTemplate, template.controller);
+                this.replaceTemplate(innerContainer, nestedTemplate, param, template.controller);
             });
         }
         if (template.controller != null && parentController != null) {
