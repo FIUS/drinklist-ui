@@ -108,6 +108,10 @@ export function getBeverageList(token: string) {
     return callRef('beverages', '', METHOD.GET, null, token);
 }
 
+export function createBeverage(token: string, name: string, price: number, stock: number) {
+    return callRef('beverages', '', METHOD.POST, {name: name, price: price, stock: stock}, token);
+}
+
 export function getUser(token: string, username: string) {
     return callRef('users', username + '/', METHOD.GET, null, token);
 }

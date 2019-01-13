@@ -8,6 +8,8 @@ import BeverageListTemplateController from "./template-controllers/beverage-list
 import OrderTemplateController from "./template-controllers/order-controller";
 import TransactionHistoryTemplateController from "./template-controllers/transaction-history-controller";
 import UserChooserTemplateController from "./template-controllers/user-chooser-controller";
+import AdminSidebarTemplateController from "./template-controllers/admin-sidebar-controller";
+import BeverageEditorTemplateController from "./template-controllers/beverage-editor-controller";
 
 const routes = new Map<string, Route>();
 
@@ -23,10 +25,17 @@ nestedOrderTemplates.set('transaction-history-container', {template: 'transactio
 const orderTemplates = new Map<string, TemplateComponent>();
 orderTemplates.set('header', {template: 'top-menu', controller: new TopMenuTemplateController()});
 orderTemplates.set('content', {template: 'order', controller: new OrderTemplateController(), nested: nestedOrderTemplates});
+orderTemplates.set('sidebar', {template: 'admin-sidebar', controller: new AdminSidebarTemplateController()});
 
 const usersTemplates = new Map<string, TemplateComponent>();
 usersTemplates.set('header', {template: 'top-menu', controller: new TopMenuTemplateController()});
 usersTemplates.set('content', {template: 'user-chooser', controller: new UserChooserTemplateController()});
+usersTemplates.set('sidebar', {template: 'admin-sidebar', controller: new AdminSidebarTemplateController()});
+
+const beverageEditorTemplates = new Map<string, TemplateComponent>();
+beverageEditorTemplates.set('header', {template: 'top-menu', controller: new TopMenuTemplateController()});
+beverageEditorTemplates.set('content', {template: 'beverage-editor', controller: new BeverageEditorTemplateController()});
+beverageEditorTemplates.set('sidebar', {template: 'admin-sidebar', controller: new AdminSidebarTemplateController()});
 
 
 routes.set('login', {
@@ -56,6 +65,15 @@ routes.set('users', {
     allowKioskParamAccess: false,
     allowCurrentUserParamAccess: false,
     param: 'username',
+});
+
+routes.set('beverage-editor', {
+    templates: beverageEditorTemplates,
+    authenticated: true,
+    needsKioskLogin: true,
+    needsAdminLogin: true,
+    allowKioskParamAccess: false,
+    allowCurrentUserParamAccess: false,
 });
 
 
