@@ -98,7 +98,7 @@ export default class UserChooserTemplateController implements TemplateController
             .classed('pointer', d => d.active)
             .classed('grow', d => d.active)
             .attr('disabled', d => !d.active ? true : null)
-            .classed('bg-yellow', filterUsername)
+            .classed('bg-gold', filterUsername)
             .classed('active', filterUsername)
             .call(users => {
                 users.select('.username')

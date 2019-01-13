@@ -49,6 +49,7 @@ export default class BeverageListTemplateController implements TemplateControlle
                 .attr('id', d => d.id)
                 .call(beverageSelection => {
                     beverageSelection.append('i')
+                        .classed('beverage-icon', true)
                         .classed('self-start', true)
                         .classed('fas', true)
                         .classed('fa-circle', true);
@@ -66,9 +67,14 @@ export default class BeverageListTemplateController implements TemplateControlle
                 })
               .merge(beverageSelection)
                 .call((beverageSelection) => {
+                    beverageSelection.select('.beverage-icon')
+                        .classed('dark-green', d => d.stock > 10)
+                        .classed('gold', d => d.stock < 10 && d.stock > 3)
+                        .classed('dark-red', d => d.stock < 3);
                     beverageSelection.select('.beverage-name').text(d => d.name);
                     beverageSelection.select('.beverage-prize').text(d => formatCurrency(d.price/100));
-                    beverageSelection.select('.beverage-stock').text(d => `(${d.stock>99 ? '>99' : (d.stock<-99 ? '<-99' : d.stock)})`);
+                    beverageSelection.select('.beverage-stock')
+                        .text(d => `(${d.stock>99 ? '>99' : (d.stock<-99 ? '<-99' : d.stock)})`);
                 })
                 .on('click', function(d) {
                     const button = select(this);

@@ -20,7 +20,11 @@ export default class LoginTemplateController implements TemplateController {
             form.select('input.password').property('value', '');
             authenticator.login(username, password).then(() => {
                 form.select('input.username').property('value', '');
-                router.changeRoute('order');
+                if (authenticator.isAdmin() || authenticator.isKiosk()) {
+                    router.changeRoute('users');
+                } else {
+                    router.changeRoute('order');
+                }
             }, (err) => {
                 container.select('.error')
                   .transition()
