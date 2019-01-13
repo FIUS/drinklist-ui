@@ -43,7 +43,8 @@ function getRoot() {
     return json(getApiUrl().href).then((root) => {
         for (const ref in root) {
             if (root.hasOwnProperty(ref)) {
-                endpointMap.set(ref, new URL(root[ref], getApiUrl()));
+                const baseHref = getApiUrl().href.replace(/\/?$/, '/');
+                endpointMap.set(ref, new URL(baseHref + root[ref].replace(/^\//, '')));
             }
         }
         completedRequests.add('root');
@@ -55,7 +56,8 @@ function getAuth() {
     return callRef('authentication').then((auth) => {
         for (const ref in auth) {
             if (auth.hasOwnProperty(ref)) {
-                endpointMap.set(ref, new URL(auth[ref], getApiUrl()));
+                const baseHref = getApiUrl().href.replace(/\/?$/, '/');
+                endpointMap.set(ref, new URL(baseHref + auth[ref].replace(/^\//, '')));
             }
         }
         completedRequests.add('auth');
