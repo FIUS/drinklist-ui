@@ -82,7 +82,7 @@ function callRef(ref: string, method: METHOD = METHOD.GET, data?, token?:string)
         requestInit.body = JSON.stringify(data);
     }
     if (token != null) {
-        requestInit.headers['X-Authentication'] = `Bearer ${token}`;
+        requestInit.headers['Authorization'] = `Bearer ${token}`;
     }
     return json(url.href, requestInit);
 }
@@ -93,4 +93,8 @@ export function login(username: string, password: string) {
 
 export function refreshToken(token: string) {
     return callRef('refresh', METHOD.POST, null, token);
+}
+
+export function getBeverageList(token: string) {
+    return callRef('beverages', METHOD.GET, null, token);
 }

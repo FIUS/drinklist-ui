@@ -1,4 +1,4 @@
-import { selectAll, select } from 'd3';
+import { selectAll, select, format, formatLocale } from 'd3';
 import { translations } from './translations';
 
 
@@ -32,3 +32,5 @@ export default function translate(language?: string) {
         .datum(function () {return select(this).attr('data-translation');})
         .attr('placeholder', getText);
 }
+
+export const formatCurrency = formatLocale({currency: ['', '€'], decimal: ',', thousands: "'", grouping: [3]}).format('-$0.2f');

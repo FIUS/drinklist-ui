@@ -14,6 +14,7 @@ export class Authentication implements LoginGuard {
     private tokenRefreshTask;
 
     private startWatchdog() {
+        this.refreshAccessToken();
         if (this.tokenRefreshTask == null) {
             this.tokenRefreshTask = window.setInterval(this.refreshAccessToken.bind(this), 60 * 1000);
         }

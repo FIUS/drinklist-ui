@@ -2,6 +2,7 @@ import {select, Selection} from 'd3';
 import { Route, TemplateComponent } from './route';
 import { LoginGuard } from './authentication';
 import translate from './translate';
+import TemplateController from './template-controller';
 
 export default class Router {
     private routes: Map<string, Route>;
@@ -60,15 +61,7 @@ export default class Router {
 
         let lastRoute = this.getRoute(this.activeRoute);
         if (lastRoute != null) {
-            console.log(lastRoute)
-            lastRoute.templates.forEach((prevTemplate, containerId) => {
-                const container = select<HTMLDivElement, any>(`div#${containerId}`);
-                if (prevTemplate != null) {
-                    if (prevTemplate.controller != null) {
-                        prevTemplate.controller.deactivateRoute(container);
-                    }
-                }
-            });
+            this.deactivateTemplates(lastRoute.templates);
         }
 
         route.templates.forEach((template, containerId) => {
@@ -85,7 +78,26 @@ export default class Router {
         this.activeRoute = hash;
     }
 
-    private replaceTemplate(container: Selection<HTMLDivElement, null, any, null>, template: TemplateComponent) {
+    private deactivateTemplates(templates: Map<string, TemplateComponent>, outerContainer?: Selection<HTMLDivElement, null, any, null>) {
+        templates.forEach((prevTemplate, containerId) => {
+            let container;
+            if (outerContainer != null) {
+                container = outerContainer.select<HTMLDivElement>(`div#${containerId}`);
+            } else {
+                container = select<HTMLDivElement, any>(`div#${containerId}`);
+            }
+            if (prevTemplate != null) {
+                if (prevTemplate.nested != null) {
+                    this.deactivateTemplates(prevTemplate.nested, container);
+                }
+                if (prevTemplate.controller != null) {
+                    prevTemplate.controller.deactivateRoute(container);
+                }
+            }
+        });
+    }
+
+    private replaceTemplate(container: Selection<HTMLDivElement, null, any, null>, template: TemplateComponent, parentController?: TemplateController) {
         const templateSelection = select(`template#${template.template}`);
         if (templateSelection.empty()) {
             console.log(`Template ID ${template.template} not found!`);
@@ -98,8 +110,15 @@ export default class Router {
             (this as HTMLDivElement).append(clone);
         });
 
+        if (template.nested != null) {
+            template.nested.forEach((nestedTemplate, containerId) => {
+                const innerContainer = container.select<HTMLDivElement>(`div#${containerId}`);
+                this.replaceTemplate(innerContainer, nestedTemplate, template.controller);
+            });
+        }
+
         if (template.controller != null) {
-            template.controller.activateRoute(container);
+            template.controller.activateRoute(container, parentController);
         }
     }
 }

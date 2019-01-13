@@ -3,6 +3,7 @@ import TemplateController from "./template-controller";
 export interface TemplateComponent {
     template: string;
     controller?: TemplateController;
+    nested?: Map<string, TemplateComponent>;
 }
 
 export interface Route {
