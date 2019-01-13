@@ -1,5 +1,5 @@
 import TemplateController from "../template-controller";
-import {select} from 'd3';
+import {select, easeLinear, rgb} from 'd3';
 import { getBeverageList, orderBeverage } from "../api";
 import { authenticator } from "..";
 import { formatCurrency } from "../translate";
@@ -37,6 +37,14 @@ export default class BeverageListTemplateController implements TemplateControlle
             beverageSelection.enter().append('button')
                 .classed('beverage', true)
                 .classed('flex', true)
+                .classed('pa2', true)
+                .classed('ma1', true)
+                .classed('ba', true)
+                .classed('br2', true)
+                .classed('grow', true)
+                .classed('bg-white', true)
+                .classed('hover-bg-near-white', true)
+
                 .attr('id', d => d.id)
                 .call(beverageSelection => {
                     beverageSelection.append('i')
@@ -64,11 +72,29 @@ export default class BeverageListTemplateController implements TemplateControlle
                 .on('click', function(d) {
                     const button = select(this);
                     button.attr('disabled', true);
+                    const bTransition = button.transition('bg')
+                        .duration(1000)
+                        .ease(easeLinear)
+                        .style('background-color', rgb(130, 130, 255) as any);
                     orderBeverage(authenticator.accessToken, self.username, d).then(() => {
                         self.updateParent();
+                        bTransition.selection().interrupt();
+                        button.transition()
+                            .duration(500)
+                            .style('background-color', rgb(130, 255, 130) as any)
+                          .transition()
+                            .duration(500)
+                            .style('background-color', null);
                         button.attr('disabled', null);
                     }, () => {
                         self.updateParent();
+                        bTransition.selection().interrupt();
+                        button.transition()
+                            .duration(500)
+                            .style('background-color', rgb(255, 130, 130) as any)
+                          .transition()
+                            .duration(500)
+                            .style('background-color', null);
                         button.attr('disabled', null);
                     });
                 });

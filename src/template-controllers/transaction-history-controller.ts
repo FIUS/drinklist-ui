@@ -1,8 +1,8 @@
 import TemplateController from "../template-controller";
-import {select, isoParse} from 'd3';
+import {select, isoParse, easeBounce} from 'd3';
 import { authenticator } from "..";
 import { getTimeFormat, formatCurrency } from "../translate";
-import { getTransactionHistory } from "../api";
+import { getTransactionHistory, revertOrder } from "../api";
 
 
 
@@ -11,6 +11,8 @@ export default class TransactionHistoryTemplateController implements TemplateCon
     private children = new Set<TemplateController>();
 
     private username: string;
+
+    private parent: TemplateController;
 
     private container;
 
@@ -22,6 +24,7 @@ export default class TransactionHistoryTemplateController implements TemplateCon
         } else {
             this.username = authenticator.username;
         }
+        this.parent = parent;
         this.container = container;
         this.updateRoute();
     }
@@ -40,7 +43,7 @@ export default class TransactionHistoryTemplateController implements TemplateCon
             });
             const cancelled = new Set<number>();
             history.forEach(transaction => {
-                if (transaction.cancels != null) {
+                if (transaction.cancels != null && transaction.cancels.id != null) {
                     cancelled.add(transaction.cancels.id);
                 }
             });
@@ -48,29 +51,44 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                 .selectAll('div.transaction').data(history, d => d.id);
 
             historySelection.exit().remove();
-            historySelection.enter()
-                .append('div')
+            historySelection.enter().append('div')
                 .classed('transaction', true)
+                .classed('flex', true)
                 .attr('id', d => d.id)
                 .call(historySelection => {
-                    const firstRow = historySelection.append('div')
+                    const outer = historySelection.append('div')
+                        .classed('content', true)
+                        .classed('flex', true)
+                        .classed('flex-column', true)
+                        .classed('flex-grow-1', true);
+                    const firstRow = outer.append('div')
                         .classed('flex', true);
                     firstRow.append('span').classed('timestamp', true);
                     firstRow.append('span').classed('reason', true);
                     firstRow.append('span').classed('amount', true);
-                    historySelection.append('div').classed('beverages', true).classed('flex', true).classed('flex-grow-1', true);
+                    outer.append('div').classed('beverages', true).classed('flex', true).classed('flex-grow-1', true);
+                    historySelection.append('div')
+                        .classed('return', true)
+                        .classed('w3', true)
+                        .classed('black', true)
+                        .classed('no-underline', true)
+                        .classed('flex', true)
+                        .classed('justify-center', true)
+                        .classed('items-center', true)
+                      .append('i')
+                        .classed('fas', true)
+                        .classed('fa-undo', true);
                 })
               .merge(historySelection)
-                .classed('flex', true)
-                .classed('flex-column', true)
                 .call(historySelection => {
-                    historySelection.classed('dark-green', d => d.amount > 0)
-                    historySelection.classed('o-50', d => cancelled.has(d.id))
-                    historySelection.classed('strike', d => cancelled.has(d.id))
+                    historySelection.select('.content')
+                        .classed('dark-green', d => d.amount > 0)
+                        .classed('o-50', d => cancelled.has(d.id))
+                        .classed('strike', d => cancelled.has(d.id))
                     historySelection.select('.timestamp')
                         .classed('mr3', true)
                         .text(d => {
-                            let parsed = isoParse(d.timestamp);
+                            let parsed = new Date().setUTCSeconds(d.timestamp);
                             return timeFormatter(parsed);
                         });
                     historySelection.select('.reason')
@@ -84,6 +102,37 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                         .classed('dark-green', d => d.amount > 0)
                         .classed('b', d => d.amount > 0)
                         .text(d => '𝚺 = ' + formatCurrency(d.amount/100));
+                    historySelection.select('.return>.fas')
+                        .style('display', d => {
+                            let past = new Date();
+                            past = new Date(past.getTime() - (5 * 60 * 1000));
+                            if (d.timestamp < past.getUTCSeconds()) {
+                                if (! authenticator.isAdmin()) {
+                                    return 'none';
+                                }
+                            }
+                        })
+                        .classed('pointer', true)
+                        .classed('grow', true)
+                        .on('click', (order) => {
+                            revertOrder(authenticator.accessToken, this.username,  order).then(() => {
+                                this.parent.updateRoute();
+                            });
+                        })
+                      .transition()
+                        .delay((d) => {
+                            let past = new Date();
+                            past = new Date(past.getTime() - (5* 60 * 1000) + 2000);
+                            const time = d.timestamp;
+                            if (time > past.getUTCSeconds()) {
+                                return (time * 1000) - past.getTime();
+                            } else {
+                                return 0;
+                            }
+                        })
+                        .duration(2000)
+                        .ease(easeBounce)
+                        .style('opacity', 0);
                 }).each(function (d) {
                     const beverageSelection = select(this).select('.beverages')
                         .selectAll('div.beverage').data(d.beverages);
