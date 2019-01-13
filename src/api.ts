@@ -113,3 +113,14 @@ export function getUser(token: string, username: string) {
 export function getTransactionHistory(token: string, username: string) {
     return callRef('users', username + '/transactions', METHOD.GET, null, token);
 }
+
+export function orderBeverage(token: string, username: string, beverage) {
+    return callRef('users', username + '/transactions', METHOD.POST, {
+        beverages: [{
+            beverage: beverage,
+            count: -1,
+        }],
+        amount: -beverage.price,
+        reason: beverage.name
+    }, token);
+}

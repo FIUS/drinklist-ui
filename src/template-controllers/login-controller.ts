@@ -4,6 +4,8 @@ import {router, authenticator} from '../index';
 
 export default class LoginTemplateController implements TemplateController {
 
+    private children = new Set<TemplateController>();
+
     activateRoute(container) {
         console.log('Auth status', authenticator.isAuthenticated())
         if (authenticator.isAuthenticated()) {
@@ -39,6 +41,14 @@ export default class LoginTemplateController implements TemplateController {
 
     deactivateRoute(container) {
 
+    }
+
+    registerChild(controller) {
+        this.children.add(controller);
+    }
+
+    removeChild(controller) {
+        this.children.delete(controller);
     }
 
 }

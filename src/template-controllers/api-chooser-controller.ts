@@ -4,6 +4,8 @@ import { select } from "d3";
 
 export default class ApiChooserTemplateController implements TemplateController {
 
+    private children = new Set<TemplateController>();
+
     activateRoute(container) {
         container.select('input.api-url')
             .on('focus', function() {
@@ -31,6 +33,14 @@ export default class ApiChooserTemplateController implements TemplateController 
 
     deactivateRoute(container) {
 
+    }
+
+    registerChild(controller) {
+        this.children.add(controller);
+    }
+
+    removeChild(controller) {
+        this.children.delete(controller);
     }
 
 }

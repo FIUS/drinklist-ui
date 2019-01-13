@@ -78,7 +78,7 @@ export default class Router {
         this.activeRoute = hash;
     }
 
-    private deactivateTemplates(templates: Map<string, TemplateComponent>, outerContainer?: Selection<HTMLDivElement, null, any, null>) {
+    private deactivateTemplates(templates: Map<string, TemplateComponent>, outerContainer?: Selection<HTMLDivElement, null, any, null>, parent?: TemplateController) {
         templates.forEach((prevTemplate, containerId) => {
             let container;
             if (outerContainer != null) {
@@ -88,9 +88,12 @@ export default class Router {
             }
             if (prevTemplate != null) {
                 if (prevTemplate.nested != null) {
-                    this.deactivateTemplates(prevTemplate.nested, container);
+                    this.deactivateTemplates(prevTemplate.nested, container, prevTemplate.controller);
                 }
                 if (prevTemplate.controller != null) {
+                    if (parent) {
+                        parent.removeChild(prevTemplate.controller);
+                    }
                     prevTemplate.controller.deactivateRoute(container);
                 }
             }
@@ -119,6 +122,9 @@ export default class Router {
                 const innerContainer = container.select<HTMLDivElement>(`div#${containerId}`);
                 this.replaceTemplate(innerContainer, nestedTemplate, template.controller);
             });
+        }
+        if (template.controller != null && parentController != null) {
+            parentController.registerChild(template.controller);
         }
     }
 }

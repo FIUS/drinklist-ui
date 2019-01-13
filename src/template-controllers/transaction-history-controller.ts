@@ -8,6 +8,8 @@ import { getTransactionHistory } from "../api";
 
 export default class TransactionHistoryTemplateController implements TemplateController {
 
+    private children = new Set<TemplateController>();
+
     private username: string;
 
     private container;
@@ -62,8 +64,9 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                 .classed('flex', true)
                 .classed('flex-column', true)
                 .call(historySelection => {
-                    historySelection.classed('dark-green', d => d.amount < 0)
+                    historySelection.classed('dark-green', d => d.amount > 0)
                     historySelection.classed('o-50', d => cancelled.has(d.id))
+                    historySelection.classed('strike', d => cancelled.has(d.id))
                     historySelection.select('.timestamp')
                         .classed('mr3', true)
                         .text(d => {
@@ -77,13 +80,13 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                     historySelection.select('.amount')
                         .classed('w4', true)
                         .classed('tr', true)
-                        .classed('dark-green', d => d.amount < 0)
-                        .classed('b', d => d.amount < 0)
+                        .classed('dark-red', d => d.amount < 0)
+                        .classed('dark-green', d => d.amount > 0)
+                        .classed('b', d => d.amount > 0)
                         .text(d => '𝚺 = ' + formatCurrency(d.amount/100));
                 }).each(function (d) {
                     const beverageSelection = select(this).select('.beverages')
                         .selectAll('div.beverage').data(d.beverages);
-                        console.log(d)
 
                     beverageSelection.exit().remove();
                     beverageSelection.enter()
@@ -108,7 +111,7 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                         })
                       .merge(beverageSelection as any)
                         .call(beverageSelection => {
-                            beverageSelection.classed('dark-green', d => (d as any).count < 0);
+                            beverageSelection.classed('dark-green', d => (d as any).count > 0);
                             beverageSelection.select('.beverage-count').text(d => (d as any).count.toString() + ' x');
                             beverageSelection.select('.beverage-name').text(d => (d as any).beverage.name);
                             beverageSelection.select('.beverage-price').text(d => 'a ' + formatCurrency((d as any).price/100));
@@ -119,6 +122,14 @@ export default class TransactionHistoryTemplateController implements TemplateCon
 
     deactivateRoute(container) {
 
+    }
+
+    registerChild(controller) {
+        this.children.add(controller);
+    }
+
+    removeChild(controller) {
+        this.children.delete(controller);
     }
 
 }
