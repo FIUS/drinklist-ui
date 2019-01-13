@@ -6,6 +6,7 @@ import ApiChooserTemplateController from "./template-controllers/api-chooser-con
 import TopMenuTemplateController from "./template-controllers/top-menu-controller";
 import BeverageListTemplateController from "./template-controllers/beverage-list-controller";
 import OrderTemplateController from "./template-controllers/order-controller";
+import TransactionHistoryTemplateController from "./template-controllers/transaction-history-controller";
 
 const routes = new Map<string, Route>();
 
@@ -16,6 +17,7 @@ loginTemplates.set('footer', {template: 'api-chooser', controller: new ApiChoose
 
 const nestedOrderTemplates = new Map<string, TemplateComponent>();
 nestedOrderTemplates.set('beverage-list-container', {template: 'beverage-list', controller: new BeverageListTemplateController()});
+nestedOrderTemplates.set('transaction-history-container', {template: 'transaction-history', controller: new TransactionHistoryTemplateController()});
 
 const orderTemplates = new Map<string, TemplateComponent>();
 orderTemplates.set('header', {template: 'top-menu', controller: new TopMenuTemplateController()});

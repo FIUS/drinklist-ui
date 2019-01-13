@@ -110,15 +110,15 @@ export default class Router {
             (this as HTMLDivElement).append(clone);
         });
 
+        if (template.controller != null) {
+            template.controller.activateRoute(container, parentController);
+        }
+
         if (template.nested != null) {
             template.nested.forEach((nestedTemplate, containerId) => {
                 const innerContainer = container.select<HTMLDivElement>(`div#${containerId}`);
                 this.replaceTemplate(innerContainer, nestedTemplate, template.controller);
             });
-        }
-
-        if (template.controller != null) {
-            template.controller.activateRoute(container, parentController);
         }
     }
 }

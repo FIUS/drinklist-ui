@@ -1,5 +1,5 @@
-import { selectAll, select, format, formatLocale } from 'd3';
-import { translations } from './translations';
+import { selectAll, select, format, formatLocale, timeFormatLocale } from 'd3';
+import { translations, time_en_GB, time_de_DE } from './translations';
 
 
 export default function translate(language?: string) {
@@ -34,3 +34,16 @@ export default function translate(language?: string) {
 }
 
 export const formatCurrency = formatLocale({currency: ['', '€'], decimal: ',', thousands: "'", grouping: [3]}).format('-$0.2f');
+
+export function getTimeFormat() {
+    const language = select('html').attr('lang');
+    let timeLocale;
+    if (language.startsWith('en')) {
+        timeLocale = time_en_GB;
+    } else if (language.startsWith('de')) {
+        timeLocale = time_de_DE;
+    } else {
+        timeLocale = time_en_GB;
+    }
+    return timeLocale;
+}

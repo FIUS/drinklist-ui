@@ -6,10 +6,17 @@ import { formatCurrency } from "../translate";
 
 export default class BeverageListTemplateController implements TemplateController {
 
+    private container;
+
     activateRoute(container, parent: TemplateController) {
         console.log(parent)
+        this.container = container;
+        this.updateRoute();
+    }
+
+    updateRoute() {
         getBeverageList(authenticator.accessToken).then((beverages) => {
-            const beverageSelection = container.select('.beverage-list')
+            const beverageSelection = this.container.select('.beverage-list')
                 .selectAll('button.beverage').data(beverages, (d) => d.id);
 
             beverageSelection.exit().remove();
