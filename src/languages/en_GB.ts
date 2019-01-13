@@ -8,6 +8,7 @@ export const en_GB = {
     'top-menu.logout': 'Logout',
     'order.greeting': 'Welcome',
     'order.balance': 'Balance',
+    'order.back-to-user-overview': 'back to overview',
     'beverage-list.heading': 'Beverages',
     'user-chooser.question': 'Who are you?',
     'user-chooser.search': 'username',

@@ -1,6 +1,6 @@
 import TemplateController from "../template-controller";
 import {select} from 'd3';
-import { authenticator } from "..";
+import { authenticator, router } from "..";
 import { getUser } from "../api";
 import { formatCurrency } from "../translate";
 
@@ -20,6 +20,16 @@ export default class OrderTemplateController implements TemplateController {
             this.username = authenticator.username;
         }
         this.container = container;
+
+        const canGoBack = authenticator.isAdmin() || authenticator.isKiosk();
+
+        container.select('button.back')
+            .classed('dn', !canGoBack)
+            .classed('flex', canGoBack)
+            .on('click', () => {
+                router.changeRoute('users');
+            });
+
         this.updateUserInfo();
     }
 

@@ -41,7 +41,8 @@ export default class UserChooserTemplateController implements TemplateController
                 if (this.activeUsers != null && this.activeUsers.length == 1) {
                     router.changeRoute(`order/${this.activeUsers[0].name}`)
                 }
-            });
+            })
+            .node().focus();
 
         getUserList(authenticator.accessToken).then(users => {
             users.sort((a, b) => {
