@@ -1,17 +1,37 @@
 import TemplateController from "../template-controller";
-import {select, easeLinear, rgb} from 'd3';
+import {select, dispatch} from 'd3';
 import { getBeverageList, orderBeverage, createBeverage } from "../api";
 import { authenticator } from "..";
 import { formatCurrency } from "../translate";
 
 export default class BeverageEditorTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();
+    private dispatcher;
+
+    private selected;
 
     private container;
 
+    constructor() {
+        this.dispatcher = dispatch('update', 'beverage');
+    }
+
+    getEventDispatcher = () => this.dispatcher;
+
     activateRoute(container, parent: TemplateController, param) {
         this.container = container;
+
+        this.dispatcher.on('beverage.click', (type: string, beverage) => {
+            if (type === 'click') {
+                if (this.selected != null && this.selected.id === beverage.id) {
+                    this.selected = null;
+                } else {
+                    this.selected = beverage;
+                }
+                this.dispatcher.call('beverage', null, 'select', this.selected);
+                this.updateForm();
+            }
+        });
 
         const self = this;
 
@@ -22,73 +42,39 @@ export default class BeverageEditorTemplateController implements TemplateControl
             const name = form.select('input.name').property('value');
             const price = parseInt(form.select('input.price').property('value'), 10);
             const stock = parseInt(form.select('input.stock').property('value'), 10);
-            createBeverage(authenticator.accessToken, name, price, stock).then(self.updateRoute.bind(self), self.updateRoute.bind(self));
+            if (this.selected == null) {
+                createBeverage(authenticator.accessToken, name, price, stock).then(self.updateRoute.bind(self), self.updateRoute.bind(self));
+            } else {
+                //TODO
+            }
         });
 
-        this.updateRoute();
+        container.select('button.delete').on('click', () => {
+            if (this.selected != null) {
+                //TODO
+            }
+        });
+
+        this.updateForm();
     }
 
     updateRoute() {
-        getBeverageList(authenticator.accessToken).then((beverages) => {
-            const self = this;
-            const beverageSelection = this.container.select('.beverages')
-                .selectAll('.beverage').data(beverages, (d) => d.id);
+        this.selected = null;
+        this.dispatcher.call('update');
+        this.updateForm();
+    }
 
-            beverageSelection.exit().remove();
-            beverageSelection.enter().append('div')
-                .classed('beverage', true)
-                .classed('flex', true)
-                .classed('items-center', true)
-                .classed('pa2', true)
-                .classed('ma1', true)
-                .classed('ba', true)
-                .classed('br2', true)
-                .classed('hover-bg-near-white', true)
-
-                .attr('id', d => d.id)
-                .call(beverageSelection => {
-                    beverageSelection.append('i')
-                        .classed('beverage-icon', true)
-                        .classed('self-start', true)
-                        .classed('fas', true)
-                        .classed('fa-circle', true);
-                    beverageSelection.append('span')
-                        .classed('beverage-stock', true)
-                        .classed('tc', true)
-                        .classed('w3', true);
-                    beverageSelection.append('span')
-                        .classed('beverage-name', true)
-                        .classed('flex-grow-1', true)
-                        .classed('tl', true);
-                    beverageSelection.append('span')
-                        .classed('beverage-prize', true)
-                        .classed('self-end', true)
-                        .classed('ml2', true);
-                })
-              .merge(beverageSelection)
-                .call((beverageSelection) => {
-                    beverageSelection.select('.beverage-icon')
-                        .classed('dark-green', d => d.stock > 10)
-                        .classed('gold', d => d.stock < 10 && d.stock > 3)
-                        .classed('dark-red', d => d.stock < 3);
-                    beverageSelection.select('.beverage-name').text(d => d.name);
-                    beverageSelection.select('.beverage-prize').text(d => formatCurrency(d.price/100));
-                    beverageSelection.select('.beverage-stock')
-                        .text(d => `(${d.stock>99 ? '>99' : (d.stock<-99 ? '<-99' : d.stock)})`);
-                });
-        })
+    updateForm() {
+        this.container.select('form input.name').property('value', this.selected != null ? this.selected.name: '');
+        this.container.select('form input.price').property('value', this.selected != null ? this.selected.price: '');
+        this.container.select('form input.stock').property('value', this.selected != null ? this.selected.stock: '');
+        this.container.select('form button.new').classed('dn', this.selected != null);
+        this.container.select('form button.edit').classed('dn', this.selected == null);
+        this.container.select('button.delete').classed('dn', this.selected == null);
     }
 
     deactivateRoute(container) {
 
-    }
-
-    registerChild(controller) {
-        this.children.add(controller);
-    }
-
-    removeChild(controller) {
-        this.children.delete(controller);
     }
 
 }

@@ -1,9 +1,16 @@
 import TemplateController from "../template-controller";
 import { authenticator, router } from "..";
+import { dispatch } from "d3";
 
 export default class AdminSidebarTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();
+    private dispatcher;
+
+    constructor() {
+        this.dispatcher = dispatch('update');
+    }
+
+    getEventDispatcher = () => this.dispatcher;
 
     activateRoute(container, parent, param) {
         const isAdmin = authenticator.isAdmin();
@@ -29,14 +36,6 @@ export default class AdminSidebarTemplateController implements TemplateControlle
 
     deactivateRoute(container) {
 
-    }
-
-    registerChild(controller) {
-        this.children.add(controller);
-    }
-
-    removeChild(controller) {
-        this.children.delete(controller);
     }
 
 }

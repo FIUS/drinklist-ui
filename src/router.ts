@@ -105,9 +105,6 @@ export default class Router {
                     this.deactivateTemplates(prevTemplate.nested, container, prevTemplate.controller);
                 }
                 if (prevTemplate.controller != null) {
-                    if (parent) {
-                        parent.removeChild(prevTemplate.controller);
-                    }
                     prevTemplate.controller.deactivateRoute(container);
                 }
             }
@@ -136,9 +133,6 @@ export default class Router {
                 const innerContainer = container.select<HTMLDivElement>(`div#${containerId}`);
                 this.replaceTemplate(innerContainer, nestedTemplate, param, template.controller);
             });
-        }
-        if (template.controller != null && parentController != null) {
-            parentController.registerChild(template.controller);
         }
     }
 }

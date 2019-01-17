@@ -1,10 +1,16 @@
 import TemplateController from "../template-controller";
 import { getApiUrl, setApiUrl } from "../api";
-import { select } from "d3";
+import { select, dispatch } from "d3";
 
 export default class ApiChooserTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();
+    private dispatcher;
+
+    constructor() {
+        this.dispatcher = dispatch('update');
+    }
+
+    getEventDispatcher = () => this.dispatcher;
 
     activateRoute(container) {
         container.select('input.api-url')
@@ -33,14 +39,6 @@ export default class ApiChooserTemplateController implements TemplateController 
 
     deactivateRoute(container) {
 
-    }
-
-    registerChild(controller) {
-        this.children.add(controller);
-    }
-
-    removeChild(controller) {
-        this.children.delete(controller);
     }
 
 }

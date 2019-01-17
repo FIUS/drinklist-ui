@@ -101,13 +101,21 @@
             <div class="flex flex-column items-center justify-center pa3">
                 <h1 class="f1" translate="yes" data-translation="beverage-editor.heading"></h1>
                 <div class="flex-grow-1 flex items-stretch">
-                    <div class="beverages flex flex-column items-stretch"></div>
-                    <form class="new-beverage flex flex-column items-stretch w5">
-                        <input class="name ma1 pa2 b--black-30 ba br2" name="name" type="text" required translate="yes" data-translation="beverage-editor.name">
-                        <input class="price ma1 pa2 b--black-30 ba br2" name="price" type="number" required translate="yes" data-translation="beverage-editor.price">
-                        <input class="stock ma1 pa2 b--black-30 ba br2" name="stock" type="number" required translate="yes" data-translation="beverage-editor.stock">
-                        <button class="submit pa2 ma3 ba br2 grow pointer bg-white hover-bg-near-white" type="submit" translate="yes" data-translation="beverage-editor.create-new"></button>
-                    </form>
+                    <div id="beverage-list-container"></div>
+                    <div class="flex flex-column items-stretch">
+                        <h2 translate="yes" data-translation="beverage-editor.edit"></h2>
+                        <form class="new-beverage flex flex-column items-stretch w5 mh2">
+                            <label class="mh2 mt2" for="name" translate="yes" data-translation="beverage-editor.name"></label>
+                            <input class="name ma1 pa2 b--black-30 ba br2" name="name" type="text" required translate="yes" data-translation="beverage-editor.name">
+                            <label class="mh2 mt2" for="price" translate="yes" data-translation="beverage-editor.price"></label>
+                            <input class="price ma1 pa2 b--black-30 ba br2" name="price" type="number" required translate="yes" data-translation="beverage-editor.price">
+                            <label class="mh2 mt2" for="stock" translate="yes" data-translation="beverage-editor.stock"></label>
+                            <input class="stock ma1 pa2 b--black-30 ba br2" name="stock" type="number" required translate="yes" data-translation="beverage-editor.stock">
+                            <button class="new pa2 mv3 ba br2 grow pointer bg-white hover-bg-near-white" type="submit" translate="yes" data-translation="beverage-editor.create-new"></button>
+                            <button class="edit pa2 mv3 ba br2 grow pointer bg-white hover-bg-near-white dn" type="submit" translate="yes" data-translation="beverage-editor.update"></button>
+                        </form>
+                        <button class="delete pa2 ma2 mt1 ba br2 grow pointer bg-white hover-bg-washed-red b--red red dn" type="submit" translate="yes" data-translation="beverage-editor.delete"></button>
+                    </div>
                 </div>
             </div>
 

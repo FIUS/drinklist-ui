@@ -1,17 +1,23 @@
 import TemplateController from "../template-controller";
-import {select} from 'd3';
+import {select, dispatch} from 'd3';
 import { authenticator, router } from "..";
-import { getUser } from "../api";
+import { getUser, orderBeverage } from "../api";
 import { formatCurrency } from "../translate";
 
 export default class OrderTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();
+    private dispatcher;
 
     private username: string;
 
     private container;
     private userObject;
+
+    constructor() {
+        this.dispatcher = dispatch('update', 'beverage', 'order', 'history');
+    }
+
+    getEventDispatcher = () => this.dispatcher;
 
     activateRoute(container, parent, param) {
         if (param != null && authenticator.isAdmin() || authenticator.isKiosk()) {
@@ -20,6 +26,26 @@ export default class OrderTemplateController implements TemplateController {
             this.username = authenticator.username;
         }
         this.container = container;
+
+        this.dispatcher.on('beverage.click', (type: string, beverage) => {
+            if (type === 'click') {
+                orderBeverage(authenticator.accessToken, this.username, beverage).then(
+                    () => {
+                        this.dispatcher.call('order', null, 'success', beverage);
+                        this.updateRoute();
+                    },
+                    (err) => {
+                        this.dispatcher.call('order', null, 'error', beverage, err);
+                    },
+                );
+            }
+        });
+
+        this.dispatcher.on('history', (type: string) => {
+            if (type === 'update') {
+                this.updateRoute();
+            }
+        });
 
         const canGoBack = authenticator.isAdmin() || authenticator.isKiosk();
 
@@ -34,8 +60,8 @@ export default class OrderTemplateController implements TemplateController {
     }
 
     updateRoute() {
-        this.children.forEach(child => {if (child.updateRoute != null) {child.updateRoute();}});
-        this.updateUserInfo
+        this.dispatcher.call('update');
+        this.updateUserInfo;
     }
 
     private updateUserInfo() {
@@ -54,14 +80,6 @@ export default class OrderTemplateController implements TemplateController {
 
     deactivateRoute(container) {
 
-    }
-
-    registerChild(controller) {
-        this.children.add(controller);
-    }
-
-    removeChild(controller) {
-        this.children.delete(controller);
     }
 
 }

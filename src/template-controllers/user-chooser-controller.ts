@@ -1,11 +1,11 @@
 import TemplateController from "../template-controller";
-import {select} from 'd3';
+import {select, dispatch} from 'd3';
 import { getUserList } from "../api";
 import { authenticator, router } from "..";
 
 export default class UserChooserTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();
+    private dispatcher;
 
     private container;
 
@@ -14,6 +14,12 @@ export default class UserChooserTemplateController implements TemplateController
     private searchstring: string;
 
     private activeUsers = [];
+
+    constructor() {
+        this.dispatcher = dispatch('route');
+    }
+
+    getEventDispatcher = () => this.dispatcher;
 
     activateRoute(container, parent: TemplateController, param) {
         this.container = container;
@@ -119,14 +125,6 @@ export default class UserChooserTemplateController implements TemplateController
     }
 
     deactivateRoute(container) {
-    }
-
-    registerChild(controller) {
-        this.children.add(controller);
-    }
-
-    removeChild(controller) {
-        this.children.delete(controller);
     }
 
 }

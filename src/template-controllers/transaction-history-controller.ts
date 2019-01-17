@@ -8,13 +8,17 @@ import { getTransactionHistory, revertOrder } from "../api";
 
 export default class TransactionHistoryTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();
-
     private username: string;
 
     private parent: TemplateController;
 
     private container;
+
+    getEventDispatcher = () => {
+        if (this.parent != null) {
+            return this.parent.getEventDispatcher();
+        }
+    };
 
     activateRoute(container, parent: TemplateController, param) {
         if ((parent as any).username != null) {
@@ -25,6 +29,10 @@ export default class TransactionHistoryTemplateController implements TemplateCon
             this.username = authenticator.username;
         }
         this.parent = parent;
+        const dispatcher = this.getEventDispatcher();
+        if (dispatcher != null) {
+            dispatcher.on('update.history', () => this.updateRoute());
+        }
         this.container = container;
         this.updateRoute();
     }
@@ -116,7 +124,10 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                         .classed('grow', true)
                         .on('click', (order) => {
                             revertOrder(authenticator.accessToken, this.username,  order).then(() => {
-                                this.parent.updateRoute();
+                                const dispatcher = this.getEventDispatcher();
+                                if (dispatcher != null) {
+                                    dispatcher.call('history', undefined, 'update');
+                                }
                             });
                         });
                     if (!authenticator.isAdmin()) {
@@ -173,14 +184,6 @@ export default class TransactionHistoryTemplateController implements TemplateCon
 
     deactivateRoute(container) {
 
-    }
-
-    registerChild(controller) {
-        this.children.add(controller);
-    }
-
-    removeChild(controller) {
-        this.children.delete(controller);
     }
 
 }

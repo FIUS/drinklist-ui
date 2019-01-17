@@ -32,9 +32,12 @@ usersTemplates.set('header', {template: 'top-menu', controller: new TopMenuTempl
 usersTemplates.set('content', {template: 'user-chooser', controller: new UserChooserTemplateController()});
 usersTemplates.set('sidebar', {template: 'admin-sidebar', controller: new AdminSidebarTemplateController()});
 
+const nestedBeverageEditorTemplates = new Map<string, TemplateComponent>();
+nestedBeverageEditorTemplates.set('beverage-list-container', {template: 'beverage-list', controller: new BeverageListTemplateController()});
+
 const beverageEditorTemplates = new Map<string, TemplateComponent>();
 beverageEditorTemplates.set('header', {template: 'top-menu', controller: new TopMenuTemplateController()});
-beverageEditorTemplates.set('content', {template: 'beverage-editor', controller: new BeverageEditorTemplateController()});
+beverageEditorTemplates.set('content', {template: 'beverage-editor', controller: new BeverageEditorTemplateController(), nested: nestedBeverageEditorTemplates});
 beverageEditorTemplates.set('sidebar', {template: 'admin-sidebar', controller: new AdminSidebarTemplateController()});
 
 

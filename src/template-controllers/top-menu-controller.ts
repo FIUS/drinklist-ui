@@ -1,10 +1,16 @@
 import TemplateController from "../template-controller";
-import {select} from 'd3';
+import {select, dispatch} from 'd3';
 import {router, authenticator} from '../index';
 
 export default class TopMenuTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();
+    private dispatcher;
+
+    constructor() {
+        this.dispatcher = dispatch('route');
+    }
+
+    getEventDispatcher = () => this.dispatcher;
 
     activateRoute(container) {
         container.select('button.logout')
@@ -17,14 +23,6 @@ export default class TopMenuTemplateController implements TemplateController {
 
     deactivateRoute(container) {
 
-    }
-
-    registerChild(controller) {
-        this.children.add(controller);
-    }
-
-    removeChild(controller) {
-        this.children.delete(controller);
     }
 
 }

@@ -1,10 +1,17 @@
 import TemplateController from "../template-controller";
-import {select, easeElasticInOut} from 'd3';
+import {select, easeElasticInOut, dispatch} from 'd3';
 import {router, authenticator} from '../index';
+import translate from "../translate";
 
 export default class LoginTemplateController implements TemplateController {
 
-    private children = new Set<TemplateController>();
+    private dispatcher;
+
+    constructor() {
+        this.dispatcher = dispatch('update');
+    }
+
+    getEventDispatcher = () => this.dispatcher;
 
     activateRoute(container) {
         if (authenticator.isAuthenticated()) {
@@ -27,6 +34,7 @@ export default class LoginTemplateController implements TemplateController {
                 }
             }, (err) => {
                 container.select('.error')
+                    .attr('data-translation', err.message.startsWith('401') ? 'login.error' : 'login.api-error')
                   .transition()
                     .duration(150)
                     .ease(easeElasticInOut)
@@ -36,7 +44,7 @@ export default class LoginTemplateController implements TemplateController {
                     .duration(750)
                     .ease(easeElasticInOut)
                     .style('opacity', '0');
-
+                translate();
             });
         });
         container.select('input.username').node().focus();
@@ -44,14 +52,6 @@ export default class LoginTemplateController implements TemplateController {
 
     deactivateRoute(container) {
 
-    }
-
-    registerChild(controller) {
-        this.children.add(controller);
-    }
-
-    removeChild(controller) {
-        this.children.delete(controller);
     }
 
 }
