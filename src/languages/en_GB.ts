@@ -10,6 +10,7 @@ export const en_GB = {
     'order.greeting': 'Welcome',
     'order.balance': 'Balance',
     'order.back-to-user-overview': 'back to overview',
+    'transaction-history.heading': 'Transaction History',
     'beverage-list.heading': 'Beverages',
     'user-chooser.question': 'Who are you?',
     'user-chooser.search': 'username',
