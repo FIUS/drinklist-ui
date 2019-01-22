@@ -107,6 +107,7 @@ export default class Router {
                 if (prevTemplate.controller != null) {
                     prevTemplate.controller.deactivateRoute(container);
                 }
+                container.selectAll('*').remove();
             }
         });
     }
