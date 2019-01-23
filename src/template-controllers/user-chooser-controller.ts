@@ -50,6 +50,8 @@ export default class UserChooserTemplateController implements TemplateController
             })
             .node().focus();
 
+        container.select('.users').classed('hide-disabled', !authenticator.isAdmin());
+
         getUserList(authenticator.accessToken).then(users => {
             users.sort((a, b) => {
                 if (a.active === b.active) {
@@ -108,6 +110,9 @@ export default class UserChooserTemplateController implements TemplateController
             .attr('disabled', d => !d.active ? true : null)
             .classed('bg-gold', filterUsername)
             .classed('active', filterUsername)
+            .classed('order-1', d => !filterUsername(d))
+            .classed('order-0-l', d => d.active)
+            .classed('order-2', d => !d.active)
             .call(users => {
                 users.select('.username')
                     .text(d => d.name);

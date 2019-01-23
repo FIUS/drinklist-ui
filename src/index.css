@@ -15,6 +15,13 @@
 
 .min-w-none { min-width: none; }
 
+.hide-disabled :disabled {
+    display: none;
+}
+
+.hide-deleted .deleted {
+    display: none;
+}
 
 @media (--breakpoint-not-small) {
     .min-w-100-ns  { min-width: 100%; }

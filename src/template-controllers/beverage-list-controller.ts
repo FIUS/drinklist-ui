@@ -1,5 +1,5 @@
 import TemplateController from "../template-controller";
-import { easeLinear, rgb } from 'd3';
+import { easeLinear, rgb, select } from 'd3';
 import { getBeverageList } from "../api";
 import { authenticator } from "..";
 import { formatCurrency } from "../translate";
@@ -8,6 +8,7 @@ export default class BeverageListTemplateController implements TemplateControlle
 
     private parent: TemplateController;
 
+    private searchstring: string = '';
     private beverages = [];
 
     private container;
@@ -52,18 +53,37 @@ export default class BeverageListTemplateController implements TemplateControlle
             } catch (Error) {}
         }
         this.container = container;
+
+        const self = this;
+
+        container.select('input.beverage-search')
+            .on('focus', function() {
+                select(this).property('value', '');
+            })
+            .on('input', function() {
+                self.searchstring = select(this).property('value');
+                self.updateBeverages.bind(self)();
+            });
         this.updateRoute();
     }
 
     updateRoute() {
         getBeverageList(authenticator.accessToken).then((beverages) => {
-            this.beverages = beverages;
+            this.beverages = beverages.sort((a,b) => {
+                if (a.name > b.name) {
+                    return 1;
+                } else if (a.name < b.name) {
+                    return -1;
+                }
+                return 0;
+            });
             this.updateBeverages();
         });
     }
 
     updateBeverages() {
         const self = this;
+        this.container.select('input.beverage-search').classed('dn', this.beverages == null || this.beverages.length<5);
         const beverageSelection = this.container.select('.beverage-list')
             .selectAll('button.beverage').data(this.beverages, (d) => d.id);
 
@@ -100,6 +120,9 @@ export default class BeverageListTemplateController implements TemplateControlle
                     .classed('ml2', true);
             })
           .merge(beverageSelection)
+            .classed('order-2', (d) => {
+                return !d.name.toLowerCase().includes(this.searchstring.toLowerCase());
+            })
             .call((beverageSelection) => {
                 beverageSelection.select('.beverage-icon')
                     .classed('dark-green', d => d.stock > 10)

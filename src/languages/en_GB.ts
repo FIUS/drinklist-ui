@@ -12,6 +12,7 @@ export const en_GB = {
     'order.back-to-user-overview': 'back to overview',
     'transaction-history.heading': 'Transaction History',
     'beverage-list.heading': 'Beverages',
+    'beverage-list.search': 'beverage',
     'user-chooser.question': 'Who are you?',
     'user-chooser.search': 'username',
     'admin-sidebar.heading': 'Admin pages:',
