@@ -10,6 +10,7 @@ import TransactionHistoryTemplateController from "./template-controllers/transac
 import UserChooserTemplateController from "./template-controllers/user-chooser-controller";
 import AdminSidebarTemplateController from "./template-controllers/admin-sidebar-controller";
 import BeverageEditorTemplateController from "./template-controllers/beverage-editor-controller";
+import UserEditorTemplateController from "./template-controllers/user-editor-controller";
 
 const routes = new Map<string, Route>();
 
@@ -40,6 +41,10 @@ beverageEditorTemplates.set('header', {template: 'top-menu', controller: new Top
 beverageEditorTemplates.set('content', {template: 'beverage-editor', controller: new BeverageEditorTemplateController(), nested: nestedBeverageEditorTemplates});
 beverageEditorTemplates.set('sidebar', {template: 'admin-sidebar', controller: new AdminSidebarTemplateController()});
 
+const userEditorTemplates = new Map<string, TemplateComponent>();
+userEditorTemplates.set('header', {template: 'top-menu', controller: new TopMenuTemplateController()});
+userEditorTemplates.set('content', {template: 'user-editor', controller: new UserEditorTemplateController()});
+userEditorTemplates.set('sidebar', {template: 'admin-sidebar', controller: new AdminSidebarTemplateController()});
 
 routes.set('login', {
     templates: loginTemplates,
@@ -72,6 +77,15 @@ routes.set('users', {
 
 routes.set('beverage-editor', {
     templates: beverageEditorTemplates,
+    authenticated: true,
+    needsKioskLogin: true,
+    needsAdminLogin: true,
+    allowKioskParamAccess: false,
+    allowCurrentUserParamAccess: false,
+});
+
+routes.set('user-editor', {
+    templates: userEditorTemplates,
     authenticated: true,
     needsKioskLogin: true,
     needsAdminLogin: true,

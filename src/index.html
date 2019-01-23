@@ -127,5 +127,46 @@
             </div>
 
         </template>
+
+        <template id="user-editor">
+            <div class="flex flex-column items-center justify-center pa3">
+                <h1 class="f2-m f1 flex-shrink-0" translate="yes" data-translation="user-editor.heading"></h1>
+                <div class="flex-grow-1 flex flex-wrap-reverse overflow-y-auto">
+                    <div class="flex flex-column ph2 min-w5">
+                        <h2 class="f3-m f2" translate="yes" data-translation="user-editor.users"></h2>
+                        <div class="user-list self-stretch flex flex-column"></div>
+                    </div>
+                    <div class="flex flex-column ph2">
+                        <h2 class="f3-m f2" translate="yes" data-translation="user-editor.create-new"></h2>
+                        <form class="new-user flex flex-column items-stretch w5 mh2">
+                            <label class="mh2 mt2" for="username" translate="yes" data-translation="user-editor.username"></label>
+                            <input class="name ma1 pa2 b--black-30 ba br2" name="username" type="text" required translate="yes" data-translation="user-editor.username">
+                            <button class="new pa2 mv3 ba br2 grow pointer bg-white hover-bg-near-white" type="submit" translate="yes" data-translation="user-editor.create-new"></button>
+                        </form>
+                        <div class="update-user dn">
+                            <h2 class="f3-m f2">
+                                <span translate="yes" data-translation="user-editor.update"></span>
+                                <span class="user"></span>
+                            </h2>
+
+                            <button class="toggle-active pa2 ma2 mt1 ba br2 grow pointer bg-white hover-bg-washed-red b--red red" translate="yes" data-translation="user-editor.deactivate"></button>
+                            <h2 class="f3-m f2" translate="yes" data-translation="user-editor.update-balance"></h2>
+                            <h3 class="f4-m f3">
+                                <span translate="yes" data-translation="user-editor.current-balance"></span>
+                                <span class="current-balance"></span>
+                            </h3>
+                            <form class="update-balance flex flex-column items-stretch w5 mh2">
+                                <label class="mh2 mt2" for="amount" translate="yes" data-translation="user-editor.amount"></label>
+                                <input class="amount ma1 pa2 b--black-30 ba br2" name="amount" type="number" required translate="yes" data-translation="user-editor.amount">
+                                <label class="mh2 mt2" for="reason" translate="yes" data-translation="user-editor.reason"></label>
+                                <input class="reason ma1 pa2 b--black-30 ba br2" name="reason" type="text" required translate="yes" data-translation="user-editor.reason">
+                                <button class="update-balance pa2 mv3 ba br2 grow pointer bg-white hover-bg-near-white" type="submit" translate="yes" data-translation="user-editor.update-balance"></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </template>
     </body>
 </html>

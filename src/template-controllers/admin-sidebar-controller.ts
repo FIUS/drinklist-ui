@@ -26,7 +26,7 @@ export default class AdminSidebarTemplateController implements TemplateControlle
             router.changeRoute('beverage-editor');
         });
         container.select('button.users').on('click', () => {
-            console.log('USER');
+            router.changeRoute('user-editor');
         });
     }
 
