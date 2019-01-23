@@ -90,6 +90,9 @@ export default class TransactionHistoryTemplateController implements TemplateCon
               .merge(historySelection)
                 .call(historySelection => {
                     historySelection.select('.content')
+                        .classed('f6', true)
+                        .classed('f5-m', true)
+                        .classed('f4-l', true)
                         .classed('dark-green', d => d.amount > 0)
                         .classed('o-50', d => cancelled.has(d.id))
                         .classed('strike', d => cancelled.has(d.id))
@@ -122,6 +125,8 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                         })
                         .classed('pointer', true)
                         .classed('grow', true)
+                        .classed('f4', true)
+                        .classed('f3-ns', true)
                         .on('click', (order) => {
                             revertOrder(authenticator.accessToken, this.username,  order).then(() => {
                                 const dispatcher = this.getEventDispatcher();
@@ -160,7 +165,9 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                         .call(beverageSelection => {
                             beverageSelection.append('div')
                                 .classed('w2', true)
+                                .classed('w3-ns', true)
                                 .classed('ml4', true)
+                                .classed('ml2-ns', true)
                                 .classed('mr2', true)
                                 .classed('tr', true)
                                 .classed('beverage-count', true);
@@ -169,6 +176,7 @@ export default class TransactionHistoryTemplateController implements TemplateCon
                                 .classed('beverage-name', true);
                             beverageSelection.append('div')
                                 .classed('w3', true)
+                                .classed('w4-ns', true)
                                 .classed('beverage-price', true);
                         })
                       .merge(beverageSelection as any)

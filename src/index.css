@@ -1,2 +1,67 @@
 @import '~tachyons/css/tachyons.css';
-@import '~@fortawesome/fontawesome-free/css/all.css'
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+.min-w-100  { min-width: 100%; }
+
+.min-w1  {  min-width: 1rem; }
+.min-w2  {  min-width: 2rem; }
+.min-w3  {  min-width: 4rem; }
+.min-w4  {  min-width: 8rem; }
+.min-w5  {  min-width: 16rem; }
+.min-w6  {  min-width: 32rem; }
+.min-w7  {  min-width: 48rem; }
+.min-w8  {  min-width: 64rem; }
+.min-w9  {  min-width: 96rem; }
+
+.min-w-none { min-width: none; }
+
+
+@media (--breakpoint-not-small) {
+    .min-w-100-ns  { min-width: 100%; }
+
+    .min-w1-ns  {  min-width: 1rem; }
+    .min-w2-ns  {  min-width: 2rem; }
+    .min-w3-ns  {  min-width: 4rem; }
+    .min-w4-ns  {  min-width: 8rem; }
+    .min-w5-ns  {  min-width: 16rem; }
+    .min-w6-ns  {  min-width: 32rem; }
+    .min-w7-ns  {  min-width: 48rem; }
+    .min-w8-ns  {  min-width: 64rem; }
+    .min-w9-ns  {  min-width: 96rem; }
+
+    .min-w-none-ns { min-width: none; }
+}
+
+
+@media (--breakpoint-medium) {
+    .min-w-100-m  { min-width: 100%; }
+
+    .min-w1-m  {  min-width: 1rem; }
+    .min-w2-m  {  min-width: 2rem; }
+    .min-w3-m  {  min-width: 4rem; }
+    .min-w4-m  {  min-width: 8rem; }
+    .min-w5-m  {  min-width: 16rem; }
+    .min-w6-m  {  min-width: 32rem; }
+    .min-w7-m  {  min-width: 48rem; }
+    .min-w8-m  {  min-width: 64rem; }
+    .min-w9-m  {  min-width: 96rem; }
+
+    .min-w-none-m { min-width: none; }
+}
+
+
+@media (--breakpoint-large) {
+    .min-w-100-l  { min-width: 100%; }
+
+    .min-w1-l  {  min-width: 1rem; }
+    .min-w2-l  {  min-width: 2rem; }
+    .min-w3-l  {  min-width: 4rem; }
+    .min-w4-l  {  min-width: 8rem; }
+    .min-w5-l  {  min-width: 16rem; }
+    .min-w6-l  {  min-width: 32rem; }
+    .min-w7-l  {  min-width: 48rem; }
+    .min-w8-l  {  min-width: 64rem; }
+    .min-w9-l  {  min-width: 96rem; }
+
+    .min-w-none-l { min-width: none; }
+}

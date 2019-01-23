@@ -17,11 +17,11 @@
         <template id="login">
             <div class="flex-grow-1 self-center flex flex-column items-center justify-center">
 
-                <h1 translate="yes" data-translation="login.heading"></h1>
+                <h1 class="f1" translate="yes" data-translation="login.heading"></h1>
                 <form class="flex flex-column">
                     <input class="username pa2 b--black-30 ba br2 br--top" translate="yes" data-translation="login.username" type="text" name="username" autocomplete="username" required>
                     <input class="password pa2 b--black-30 ba br2 br--bottom" translate="yes" data-translation="login.password" type="password" name="password" autocomplete="current-password" required>
-                    <button class="submit mt2 br2 pa2" type="submit" translate="yes" data-translation="login.login"></button>
+                    <button class="submit mt2 pa2 ba br2 grow" type="submit" translate="yes" data-translation="login.login"></button>
                 </form>
                 <p class="error o-0 red" translate="yes" data-translation="login.error"></p>
             </div>
@@ -30,80 +30,84 @@
         <template id="api-chooser">
             <div class="flex-grow-1 flex justify-end items-center">
                 <p class="f5 gray mr2" translate="yes" data-translation="api-chooser.apiURL">Api URL</p>
-                <input class="api-url w5 truncate f5 mr2 pa1 bn gray" type="url"></input>
+                <input class="api-url w5-l truncate f5 mr2 pa1 bn gray" type="url"></input>
             </div>
         </template>
 
         <template id="top-menu">
             <div class="flex pa2 items-center">
-                <button class="logout f4 pa2 ba br2 b--red bg-white hover-red hover-bg-near-white link bg-animate pointer"><i class="fas fa-sign-out-alt"></i><span class="ml2" translate="yes" data-translation="top-menu.logout"></span></button>
+                <button class="logout f4-l f3-m f2 pa2 ba br2 b--red bg-white hover-red hover-bg-near-white link bg-animate pointer"><i class="fas fa-sign-out-alt"></i><span class="ml2" translate="yes" data-translation="top-menu.logout"></span></button>
             </div>
         </template>
 
         <template id="order">
-            <div class="flex-grow-1 flex items-stretch ma3">
-                <div class="flex-grow-1 flex flex-column">
-                    <h1 class="mb1"><span class="o-70" translate="yes" data-translation="order.greeting"></span><span class="username ml2"></span></h1>
-                    <button class="back dn items-center justify-center pa2 ma1 ba br2 grow pointer bg-white hover-bg-near-white"><i class="fas fa-arrow-left"></i><span class="ml2" translate="yes" data-translation="order.back-to-user-overview"></span></button>
-                    <div id="beverage-list-container"></div>
-                </div>
-                <div class="ml3 flex-grow-1 flex flex-column">
-                    <div class="balance-container br4 pa3">
-                        <h1 class="o-70 mv1" translate="yes" data-translation="order.balance"></h1>
-                        <h2 class="balance f1 tr mv1"></h2>
+            <div class="flex-grow-1 flex flex-column items-stretch ma3">
+                <div class="flex-shrink-0 flex flex-wrap">
+                    <div class="flex-grow-1 mh2 mb3 ph3">
+                        <h1 class="mb1 f2-m f1"><span class="o-70" translate="yes" data-translation="order.greeting"></span><span class="username ml2"></span></h1>
+                        <button class="back dn items-center justify-center pa2 ma1 ba br2 grow pointer bg-white hover-bg-near-white"><i class="fas fa-arrow-left"></i><span class="ml2" translate="yes" data-translation="order.back-to-user-overview"></span></button>
                     </div>
-                    <div id="transaction-history-container"></div>
+                    <div class="balance-container flex-grow-1 min-w5 mh2 mb3 br4 pa3">
+                        <h1 class="o-70 f2-m f1 mv1" translate="yes" data-translation="order.balance"></h1>
+                        <h2 class="balance f2-m f1 tr mv1"></h2>
+                    </div>
+                </div>
+                <div class="flex-grow-1 flex flex-wrap">
+                    <div class="mh2 mb2 flex-grow-1" id="beverage-list-container"></div>
+                    <div class="mh2 mb2 flex-grow-1" id="transaction-history-container"></div>
                 </div>
             </div>
         </template>
 
         <template id="user-chooser">
             <div class="flex-grow-1 flex flex-column items-stretch">
-                <div class="flex flex-column items-center justify-center">
-                    <h1 class="f1" translate="yes" data-translation="user-chooser.question"></h1>
-                    <input class="user-search w-two-thirds pa2 ba br2 b--black-30" type="search" translate="yes" data-translation="user-chooser.search">
+                <div class="flex-shrink-0 flex flex-column items-center justify-center ph2">
+                    <h1 class="f2 f1-ns" translate="yes" data-translation="user-chooser.question"></h1>
+                    <input class="user-search w-two-thirds-ns w-100 pa2 ba br2 b--black-30" type="search" translate="yes" data-translation="user-chooser.search">
                 </div>
-                <div class="users flex flex-wrap ma4">
-
-                </div>
+                <div class="users flex flex-wrap pv4 ph4-ns ph2 overflow-y-auto"></div>
             </div>
         </template>
 
         <template id="beverage-list">
-            <h2 class="ph3" translate="yes" data-translation="beverage-list.heading"></h2>
-            <div class="beverage-list flex flex-column pa2"></div>
+            <div class="flex flex-column min-w6-ns min-w5">
+                <h2 class="f3-m f2 ph3" translate="yes" data-translation="beverage-list.heading"></h2>
+                <div class="beverage-list flex flex-column pa2 overflow-y-auto"></div>
+            </div>
         </template>
 
         <template id="transaction-history">
-            <h2 translate="yes" data-translation="transaction-history.heading"></h2>
-            <div class="transaction-history flex flex-column pa2"></div>
+            <div class="flex flex-column min-w6-ns min-w5">
+                <h2 class="f3-m f2" translate="yes" data-translation="transaction-history.heading"></h2>
+                <div class="transaction-history flex flex-column pa2"></div>
+            </div>
         </template>
 
         <template id="admin-sidebar">
-            <div class="bg-near-white w5 dn flex-column">
-                <h2 class="mh3" translate="yes" data-translation="admin-sidebar.heading"></h2>
+            <div class="bg-near-white dn flex-column">
+                <h2 class="f3 f2-ns mh3" translate="yes" data-translation="admin-sidebar.heading"></h2>
                 <button class="home flex items-center justify-center pa2 ma3 ba br2 grow pointer bg-white hover-bg-near-white">
                     <i class="fas fa-home"></i>
-                    <span class="ml2" translate="yes" data-translation="admin-pages.home"></span>
+                    <span class="ml2 di-ns dn" translate="yes" data-translation="admin-pages.home"></span>
                 </button>
                 <button class="beverages flex items-center justify-center pa2 ma3 ba br2 grow pointer bg-white hover-bg-near-white">
                     <i class="fas fa-wine-bottle"></i>
-                    <span class="ml2" translate="yes" data-translation="admin-pages.beverages"></span>
+                    <span class="ml2 di-ns dn" translate="yes" data-translation="admin-pages.beverages"></span>
                 </button>
                 <button class="users flex items-center justify-center pa2 ma3 ba br2 grow pointer bg-white hover-bg-near-white">
                     <i class="fas fa-user"></i>
-                    <span class="ml2" translate="yes" data-translation="admin-pages.users"></span>
+                    <span class="ml2 di-ns dn" translate="yes" data-translation="admin-pages.users"></span>
                 </button>
             </div>
         </template>
 
         <template id="beverage-editor">
             <div class="flex flex-column items-center justify-center pa3">
-                <h1 class="f1" translate="yes" data-translation="beverage-editor.heading"></h1>
-                <div class="flex-grow-1 flex items-stretch">
-                    <div id="beverage-list-container"></div>
-                    <div class="flex flex-column items-stretch">
-                        <h2 translate="yes" data-translation="beverage-editor.edit"></h2>
+                <h1 class="f2-m f1 flex-shrink-0" translate="yes" data-translation="beverage-editor.heading"></h1>
+                <div class="flex-grow-1 flex flex-wrap-reverse overflow-y-auto">
+                    <div class="self-stretch" id="beverage-list-container"></div>
+                    <div class="flex flex-column">
+                        <h2 class="f3-m f2" translate="yes" data-translation="beverage-editor.edit"></h2>
                         <form class="new-beverage flex flex-column items-stretch w5 mh2">
                             <label class="mh2 mt2" for="name" translate="yes" data-translation="beverage-editor.name"></label>
                             <input class="name ma1 pa2 b--black-30 ba br2" name="name" type="text" required translate="yes" data-translation="beverage-editor.name">

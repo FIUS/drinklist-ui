@@ -94,6 +94,7 @@ export default class UserChooserTemplateController implements TemplateController
         users.enter().append('button')
             .classed('user', true)
             .classed('f3', true)
+            .classed('f2-ns', true)
             .classed('ma1', true)
             .classed('pa3', true)
             .classed('bn', true)
