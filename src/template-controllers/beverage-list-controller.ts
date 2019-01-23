@@ -22,10 +22,8 @@ export default class BeverageListTemplateController implements TemplateControlle
         this.parent = parent;
         const dispatcher = this.getEventDispatcher();
         if (dispatcher != null) {
-            dispatcher.on('update.beverageList', (type: string) => {
-                if (type === 'update') {
-                    this.updateRoute();
-                }
+            dispatcher.on('update.beverageList', () => {
+                this.updateRoute();
             });
             try {
                 dispatcher.on('beverage.select', (type: string, beverage) => {
