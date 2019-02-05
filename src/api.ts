@@ -138,3 +138,11 @@ export function orderBeverage(token: string, username: string, beverage) {
 export function revertOrder(token: string, username: string, order) {
     return callRef('users', username + '/transactions/' + order.id + '/', METHOD.DELETE, {reason: 'User undo'}, token);
 }
+
+export function deActivateUser(token: string, username: string, active: boolean) {
+    return callRef('users', username + '/', METHOD.PUT, {active: active}, token);
+}
+
+export function addAmountToUserBalance(token: string, username: string, amount: number, reason: string) {
+    return callRef('users', username + '/transactions/', METHOD.POST, {amount: amount, reason: reason, beverages: []}, token);
+}

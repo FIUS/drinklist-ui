@@ -1,6 +1,6 @@
 import TemplateController from "../template-controller";
 import {select, dispatch} from 'd3';
-import { getBeverageList, orderBeverage, createBeverage, getUserList } from "../api";
+import { getBeverageList, orderBeverage, createBeverage, getUserList, deActivateUser, addAmountToUserBalance } from "../api";
 import { authenticator } from "..";
 import translate, { formatCurrency } from "../translate";
 
@@ -36,6 +36,7 @@ export default class UserEditorTemplateController implements TemplateController 
     }
 
     updateRoute() {
+        const oldSelected = this.selected;
         this.selected = null;
         this.dispatcher.call('update');
         getUserList(authenticator.accessToken).then((users) => {
@@ -47,6 +48,13 @@ export default class UserEditorTemplateController implements TemplateController 
                 }
                 return 0;
             });
+            if (oldSelected != null) {
+                this.users.forEach((user) => {
+                    if (user.name === oldSelected.name) {
+                        this.selected = user;
+                    }
+                });
+            }
             this.updateElements();
         }, (err) => console.log(err));
     }
@@ -93,11 +101,40 @@ export default class UserEditorTemplateController implements TemplateController 
           .select('span.user').text(this.selected != null ? this.selected.name : '');
         this.container.select('button.toggle-active')
             .attr('data-translation', (this.selected != null && this.selected.active) ?
-                    'user-editor.deactivate': 'user-editor.activate');
+                    'user-editor.deactivate': 'user-editor.activate')
+            .on('click', () => {
+                if (this.selected == null) {
+                    return;
+                }
+                deActivateUser(authenticator.accessToken, this.selected.name, !this.selected.active).then(() => {
+                    this.updateRoute();
+                }, (err) => {console.log(err);});
+            });
 
         this.container.select('span.current-balance')
             .classed('red', this.selected != null && this.selected.balance < 0)
-            .text(this.selected != null ? formatCurrency(this.selected.balance/100) : '–')
+            .text(this.selected != null ? formatCurrency(this.selected.balance/100) : '–');
+
+        const self = this;
+
+        if (this.selected != null) {
+            this.container.select('form.update-balance').on('submit', function() {
+                if (self.selected == null) {
+                    return;
+                }
+                const event = require('d3').event; // live binding needed!
+                event.preventDefault();
+                const form = select(this);
+                const amount = parseInt(form.select('input.amount').property('value'), 10);
+                const reason = form.select('input.reason').property('value');
+                addAmountToUserBalance(authenticator.accessToken, self.selected.name, amount, reason).then(() => {
+                    self.updateRoute();
+                }, (err) => {console.log(err);});
+            });
+        } else {
+            this.container.select('form.update-balance').on('submit', null);
+        }
+
         translate();
     }
 

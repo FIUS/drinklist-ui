@@ -37,5 +37,5 @@ export const en_GB = {
     'user-editor.update-balance': 'Update Balance',
     'user-editor.current-balance': 'Current Balance',
     'user-editor.reason': 'Reason',
-    'user-editor.amount': 'Amount (100 = 1€)',
+    'user-editor.amount': 'Add Amount (100 = 1€)',
 }
